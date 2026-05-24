@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MEC Student Voice</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-body: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      --bg-card: #ffffff;
+      --bg-input: #f8fafc;
+      --bg-hover: #f1f5f9;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      --border: #e2e8f0;
+      --border-focus: #cbd5e1;
+      --primary: #1e40af;
+      --primary-dark: #1e3a8a;
+      --primary-light: #3b82f6;
+      --primary-gradient: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+      --primary-glow: rgba(59, 130, 246, 0.15);
+      --success: #059669;
+      --success-light: #10b981;
+      --success-bg: rgba(16, 185, 129, 0.1);
+      --warning: #d97706;
+      --warning-light: #f59e0b;
+      --warning-bg: rgba(245, 158, 11, 0.1);
+      --danger: #dc2626;
+      --danger-light: #ef4444;
+      --danger-bg: rgba(239, 68, 68, 0.1);
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      --radius: 16px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-fast: all 0.15s ease;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    
+    body { 
+      background: var(--bg-body); 
+      color: var(--text-main); 
+      line-height: 1.6; 
+      min-height: 100vh; 
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+      font-size: 14px; 
+      display: flex; 
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    .top-bar { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 0; 
+      background: var(--primary-gradient); 
+      position: sticky; 
+      top: 0; 
+      z-index: 1000; 
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(12px);
+    }
+    
+    .logo-area { 
+      display: flex; 
+      align-items: center; 
+      gap: 16px; 
+      background: rgba(255, 255, 255, 0.95); 
+      padding: 12px 24px; 
+      border-radius: 0 0 20px 0; 
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+    
+    .logo-area:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    
+    .logo-img { height: 48px; width: auto; object-fit: contain; }
+    
+    .logo-text { 
+      font-weight: 700; 
+      font-size: 1rem; 
+      color: var(--primary-dark); 
+      line-height: 1.4; 
+      border-left: 3px solid var(--primary-light); 
+      padding-left: 16px;
+    }
+    
+    .logo-text .subtitle { 
+      font-size: 0.75rem; 
+      color: var(--text-muted); 
+      font-weight: 500; 
+      display: block;
+      margin-top: 2px;
+    }
+    
+    .controls { display: flex; gap: 10px; padding-right: 24px; }
+    
+    .ctrl-btn { 
+      background: rgba(255,255,255,0.15); 
+      border: 1px solid rgba(255,255,255,0.3); 
+      color: #ffffff; 
+      padding: 10px 18px; 
+      border-radius: var(--radius-full); 
+      cursor: pointer; 
+      display: flex; 
+      align-items: center; 
+      gap: 8px; 
+      font-size: 0.9rem; 
+      font-weight: 600; 
+      transition: var(--transition);
+      backdrop-filter: blur(4px);
+    }
+    
+    .ctrl-btn:hover { 
+      background: rgba(255,255,255,0.25); 
+      color: #ffffff; 
+      border-color: rgba(255,255,255,0.5);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    
+    .ctrl-btn.danger { background: var(--danger-light); color: #ffffff; border: 1px solid transparent; }
+    .ctrl-btn.danger:hover { background: var(--danger); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); }
+    
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px 48px; flex: 1; }
+    
+    .role-selection { 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: center; 
+      min-height: calc(100vh - 100px); 
+      text-align: center; 
+      gap: 32px; 
+      padding: 32px 20px;
+      animation: fadeInUp 0.6s ease;
+    }
+    
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .role-container { 
+      background: var(--bg-card); 
+      padding: 20px 36px; 
+      border-radius: var(--radius-lg); 
+      box-shadow: var(--shadow-lg); 
+      display: inline-block; 
+      border: 1px solid var(--border);
+      transition: var(--transition);
+    }
+    
+    .role-container:hover { transform: translateY(-4px); box-shadow: var(--shadow-xl); }
+    
+    .role-selection .logo-large { height: 72px; width: auto; object-fit: contain; display: block; }
+    
+    .role-selection h2 { 
+      font-size: 1.8rem; 
+      color: var(--text-main); 
+      margin-bottom: 12px; 
+      font-weight: 800;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .role-selection p { color: var(--text-muted); margin-bottom: 36px; font-size: 1.05rem; max-width: 500px; line-height: 1.7; }
+    
+    .role-cards { display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; }
+    
+    .role-card { 
+      background: var(--bg-card); 
+      padding: 40px 48px; 
+      border-radius: var(--radius-lg); 
+      border: 2px solid var(--border); 
+      cursor: pointer; 
+      transition: var(--transition); 
+      min-width: 240px; 
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .role-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: var(--primary-gradient); opacity: 0; transition: var(--transition);
+    }
+    
+    .role-card:hover { 
+      border-color: var(--primary-light); 
+      transform: translateY(-8px); 
+      box-shadow: var(--shadow-xl); 
+      background: linear-gradient(145deg, #ffffff, var(--primary-glow));
+    }
+    
+    .role-card:hover::before { opacity: 1; }
+    .role-card .icon { font-size: 4rem; margin-bottom: 20px; display: block; transition: var(--transition); }
+    .role-card:hover .icon { transform: scale(1.1) rotate(5deg); }
+    .role-card h3 { font-size: 1.25rem; margin-bottom: 10px; color: var(--text-main); font-weight: 700; }
+    .role-card p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; }
+    
+    .tabs { 
+      display: flex; gap: 6px; margin: 32px 0; background: var(--bg-card); 
+      padding: 6px; border-radius: var(--radius-full); border: 2px solid var(--border); 
+      display: inline-flex; box-shadow: var(--shadow-sm);
+    }
+    
+    .tab { 
+      flex: 1; min-width: 140px; padding: 12px 28px; text-align: center; 
+      border-radius: var(--radius-full); cursor: pointer; font-weight: 600; 
+      color: var(--text-muted); user-select: none; transition: var(--transition); font-size: 0.95rem;
+    }
+    
+    .tab.active { background: var(--primary-gradient); color: #ffffff; box-shadow: var(--shadow); transform: translateY(-2px); }
+    .tab:hover:not(.active) { background: var(--bg-hover); color: var(--text-main); }
+    
+    .view { display: none; animation: fadeIn 0.4s ease; }
+    .view.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .card { 
+      background: var(--bg-card); padding: 32px; border-radius: var(--radius-lg); 
+      border: 1px solid var(--border); margin-bottom: 28px; box-shadow: var(--shadow-lg);
+      transition: var(--transition);
+    }
+    
+    .card:hover { box-shadow: var(--shadow-xl); }
+    
+    .card h3 {
+      margin-bottom: 24px; color: var(--primary-dark); border-bottom: 3px solid var(--primary-light); 
+      padding-bottom: 16px; font-weight: 700; font-size: 1.3rem; display: flex; align-items: center; gap: 10px;
+    }
+    
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 20px; }
+    
+    label { display: block; margin-bottom: 8px; color: var(--text-main); font-size: 0.95rem; font-weight: 600; letter-spacing: 0.2px; }
+    label .required { color: var(--danger-light); margin-left: 4px; font-weight: 700; }
+    
+    input, select, textarea { 
+      width: 100%; padding: 14px 16px; background: var(--bg-input); 
+      border: 2px solid var(--border); border-radius: 12px; color: var(--text-main); 
+      font-size: 1rem; outline: none; transition: var(--transition); font-family: inherit;
+    }
+    
+    input:hover, select:hover, textarea:hover { border-color: var(--border-focus); }
+    
+    input:focus, select:focus, textarea:focus { 
+      border-color: var(--primary-light); box-shadow: 0 0 0 4px var(--primary-glow); 
+      background: #ffffff; transform: translateY(-1px);
+    }
+    
+    input::placeholder, textarea::placeholder { color: var(--text-light); font-weight: 400; }
+    textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+    
+    .btn { 
+      width: 100%; padding: 15px 24px; background: var(--primary-gradient); 
+      color: #ffffff; border: none; border-radius: 12px; cursor: pointer; 
+      font-weight: 700; margin-top: 16px; display: flex; justify-content: center; 
+      align-items: center; gap: 10px; font-size: 1.05rem; transition: var(--transition); 
+      letter-spacing: 0.3px; position: relative; overflow: hidden;
+      box-shadow: 0 4px 14px rgba(30, 64, 175, 0.4);
+    }
+    
+    .btn::before {
+      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: 0.5s;
+    }
+    .btn:hover::before { left: 100%; }
+    .btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(30, 64, 175, 0.5); }
+    .btn:active:not(:disabled) { transform: translateY(-1px); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+    
+    .btn-outline { 
+      background: transparent; border: 2.5px solid var(--primary-light); 
+      color: var(--primary-dark); width: auto; padding: 13px 28px; font-weight: 600; transition: var(--transition);
+    }
+    .btn-outline:hover:not(:disabled) { 
+      background: var(--primary-gradient); color: #ffffff; 
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4); transform: translateY(-2px); border-color: transparent;
+    }
+    
+    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    th { 
+      text-align: left; padding: 16px 14px; background: var(--primary-gradient); 
+      color: #ffffff; font-weight: 600; border-bottom: 3px solid var(--primary-dark); 
+      position: sticky; top: 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    td { padding: 14px 14px; border-bottom: 1px solid var(--border); color: var(--text-main); transition: var(--transition-fast); }
+    tr:hover td { background: var(--primary-glow); }
+    tr:last-child td { border-bottom: none; }
+    
+    .badge { padding: 6px 16px; border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 700; display: inline-block; letter-spacing: 0.3px; text-transform: uppercase; }
+    .badge-red { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+    .badge-yellow { background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-green { background: var(--success-bg); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); }
+    
+    select.cell-select { 
+      padding: 8px 14px; border-radius: 10px; background: var(--bg-input); 
+      border: 2px solid var(--border); color: var(--text-main); cursor: pointer; 
+      width: auto; min-width: 130px; font-weight: 500; transition: var(--transition);
+    }
+    select.cell-select:hover { border-color: var(--primary-light); }
+    select.cell-select:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px var(--primary-glow); outline: none; }
+    
+    .modal { 
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+      background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); z-index: 2000; 
+      justify-content: center; align-items: center; padding: 24px; animation: modalFadeIn 0.3s ease;
+    }
+    @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal.active { display: flex; }
+    
+    .modal-box { 
+      background: var(--bg-card); padding: 40px; border-radius: var(--radius-lg); 
+      width: 100%; max-width: 460px; border: 1px solid var(--border); position: relative; 
+      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: var(--shadow-xl);
+    }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    
+    .modal-close { 
+      position: absolute; top: 16px; right: 16px; background: var(--bg-hover); 
+      border: none; color: var(--text-muted); cursor: pointer; font-size: 1.5rem; 
+      width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; 
+      border-radius: var(--radius-full); transition: var(--transition);
+    }
+    .modal-close:hover { background: var(--danger-bg); color: var(--danger); transform: rotate(90deg); }
+    
+    .alert { padding: 16px 20px; border-radius: 12px; margin: 18px 0; font-weight: 600; display: none; border: 2px solid transparent; animation: slideIn 0.3s ease; }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+    .alert.show { display: block; }
+    .alert-success { background: var(--success-bg); color: var(--success); border-color: rgba(16, 185, 129, 0.4); }
+    .alert-error { background: var(--danger-bg); color: var(--danger); border-color: rgba(239, 68, 68, 0.4); }
+    
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; margin-bottom: 28px; }
+    .stat-card { 
+      background: var(--bg-card); padding: 22px; border-radius: var(--radius); 
+      border: 2px solid var(--border); text-align: center; transition: var(--transition); position: relative; overflow: hidden;
+    }
+    .stat-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--primary-gradient); opacity: 0; transition: var(--transition); }
+    .stat-card:hover { border-color: var(--primary-light); transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .stat-card:hover::after { opacity: 1; }
+    .stat-value { font-size: 2.2rem; font-weight: 800; margin: 6px 0; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+    .stat-card:nth-child(2) .stat-value { background: linear-gradient(135deg, var(--success) 0%, var(--success-light) 100%); -webkit-background-clip: text; }
+    .stat-card:nth-child(3) .stat-value { background: linear-gradient(135deg, var(--warning) 0%, var(--warning-light) 100%); -webkit-background-clip: text; }
+    .stat-label { color: var(--text-muted); font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    
+    .loading { display: none; text-align: center; padding: 24px; color: var(--text-muted); font-weight: 500; }
+    .loading.show { display: block; }
+    .spinner { width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--primary-light); border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; margin-left: 10px; vertical-align: middle; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    
+    .pin-input { text-align: center; font-size: 1.8rem; letter-spacing: 16px; font-weight: 700; font-family: monospace; }
+    .help-text { color: var(--text-muted); display: block; margin-top: 6px; font-size: 0.85rem; font-weight: 400; }
+    
+    .footer { background: var(--primary-gradient); color: #ffffff; text-align: center; padding: 28px 20px; margin-top: auto; border-top: 3px solid rgba(255,255,255,0.2); position: relative; overflow: hidden; }
+    .footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); }
+    .footer p { font-size: 0.95rem; margin: 0; opacity: 0.95; font-weight: 500; }
+    
+    .dashboard-header {
+      background: var(--bg-card); padding: 24px; border-radius: var(--radius-lg); 
+      margin-bottom: 28px; box-shadow: var(--shadow-lg); border: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; transition: var(--transition);
+    }
+    .dashboard-header:hover { box-shadow: var(--shadow-xl); }
+    .dashboard-header .logo-section { display: flex; align-items: center; gap: 18px; }
+    .dashboard-header .logo-section img { height: 56px; width: auto; object-fit: contain; }
+    .dashboard-header .title-section h3 { color: var(--primary-dark); font-size: 1.5rem; font-weight: 700; margin: 0; }
+    .dashboard-header .title-section p { color: var(--text-muted); font-size: 0.95rem; margin: 4px 0 0 0; }
+    .admin-info { display: flex; gap: 12px; align-items: center; background: var(--bg-input); padding: 12px 20px; border-radius: var(--radius-full); border: 2px solid var(--primary-light); font-weight: 600; }
+    .admin-info .material-icons-round { color: var(--primary-light); font-size: 22px; }
+    
+    @media (max-width: 768px) {
+      .top-bar { flex-direction: column; padding: 8px 0; }
+      .logo-area { border-radius: 0 0 16px 16px; width: 100%; justify-content: center; padding: 10px 16px; }
+      .controls { padding: 10px 0; width: 100%; justify-content: center; flex-wrap: wrap; }
+      .ctrl-btn { padding: 8px 14px; font-size: 0.85rem; }
+      .form-grid { grid-template-columns: 1fr; }
+      .tabs { width: 100%; flex-wrap: wrap; }
+      .tab { min-width: 120px; padding: 10px 16px; font-size: 0.9rem; }
+      .stat-value { font-size: 1.8rem; }
+      .role-cards { flex-direction: column; align-items: center; }
+      .role-card { width: 100%; max-width: 340px; padding: 32px 36px; }
+      .card { padding: 24px; }
+      .modal-box { padding: 32px 24px; margin: 16px; }
+      .dashboard-header { flex-direction: column; text-align: center; }
+      .dashboard-header .logo-section { flex-direction: column; gap: 12px; }
+    }
+    
+    @media (max-width: 480px) {
+      .role-selection h2 { font-size: 1.5rem; }
+      .role-selection p { font-size: 1rem; }
+      .role-card { padding: 28px 24px; }
+      .role-card .icon { font-size: 3rem; }
+      .btn { padding: 14px 20px; font-size: 1rem; }
+      .pin-input { font-size: 1.5rem; letter-spacing: 12px; }
+    }
+    
+    .text-center { text-align: center; }
+    .mb-4 { margin-bottom: 16px; }
+    .mb-6 { margin-bottom: 24px; }
+    .mt-4 { margin-top: 16px; }
+    .flex-center { display: flex; align-items: center; justify-content: center; }
+    
+    a:focus, button:focus, input:focus, select:focus, textarea:focus {
+      outline: 3px solid var(--primary-light); outline-offset: 2px;
+    }
+    
+    @media print {
+      .top-bar, .footer, .controls, .btn { display: none !important; }
+      .card, .modal-box { box-shadow: none !important; border: 1px solid #ccc !important; }
+    }
+  </style>
+</head>
+<body>
+
+  </div>
+  <div class="controls" id="topControls" style="display:none">
+    <button class="ctrl-btn danger" onclick="goToRoleSelection()">
+      <span class="material-icons-round" style="font-size:18px">home</span> Home
+    </button>
+    <button class="ctrl-btn danger" onclick="adminLogout()" id="logoutBtn" style="display:none">
+      <span class="material-icons-round" style="font-size:18px">logout</span> Logout
+    </button>
+  </div>
+</div>
+
+<!-- Main Container -->
+<div class="container">
+  <div id="roleSelection" class="view active">
+    <div class="role-selection">
+      <div class="role-container">
+        <img src="https://mec.edu.om/wp-content/themes/twentytwentyone/assets/images/mec-logo-black.svg" alt="MEC Logo" class="logo-large">
+      </div>
+      <h2 id="welcomeText">Welcome to MEC Student Service</h2>
+      <p id="selectRoleText">Please select your role to continue</p>
+      <div class="role-cards">
+        <div class="role-card" onclick="selectRole('student')">
+          <span class="icon">👤</span><h3>Student Portal</h3><p>Submit complaints & suggestions</p>
+        </div>
+        <div class="role-card" onclick="selectRole('admin')">
+          <span class="icon">📊</span><h3>Admin Dashboard</h3><p>Manage reports & analytics</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Student Portal -->
+  <div id="citizen" class="view">
+    <div class="card">
+      <h3>
+        <span class="material-icons-round" style="vertical-align:middle; margin-right:8px">assignment</span>
+        <span id="formTitleText">Submit Complaint or Suggestion</span>
+      </h3>
+      <form id="mainForm" onsubmit="handleSubmit(event)">
+        
+        <!-- ✅ College ID as TEXT Input - New Format -->
+        <div style="margin-bottom:22px">
+          <label id="collegeIdLabel">College ID <span class="required">*</span></label>
+          <input 
+            type="text" 
+            id="collegeId" 
+            required 
+            placeholder="e.g., 23f24545" 
+            pattern="^\d{2}[a-z]\d{5}$" 
+            title="Format: 2 digits + 1 lowercase letter + 5 digits (e.g., 23f24545)"
+            maxlength="8"
+            autocomplete="off"
+            style="text-transform: lowercase; font-family: monospace; letter-spacing: 1px;"
+          >
+          <small class="help-text">Format: 2 digits + 1 letter + 5 digits (e.g., 23f24545)</small>
+        </div>
+        
+        <div class="form-grid">
+          <div>
+            <label id="buildingNameLabel">Building Name <span class="required">*</span></label>
+            <select id="buildingName" required>
+              <option value="">-- Select Building --</option>
+              <option>IBR</option><option>IBK</option><option>AKZ</option><option>AKH</option><option>STUDENT HUB</option><option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label id="serviceLabel">Service Type <span class="required">*</span></label>
+            <select id="service" required>
+              <option value="">-- Select --</option>
+              <option>Academic Affairs</option><option>IT Support / LMS</option><option>Facilities / Maintenance</option><option>Student Activities</option><option>Finance / Registration</option><option>Library Services</option><option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom:22px">
+          <label id="causeLabel">Root Cause <span class="required">*</span></label>
+          <select id="cause" required>
+            <option value="">-- Select --</option>
+            <option>Technical Issue</option><option>Parking</option><option>Session</option><option>Library Services</option><option>Other</option>
+          </select>
+        </div>
+        <label id="detailsLabel">Complaint Details <span class="required">*</span></label>
+        <textarea id="details" required placeholder="Describe your issue clearly..."></textarea>
+        <div style="display:flex; gap:16px; margin-top:22px; flex-wrap:wrap">
+          <button type="submit" class="btn" id="submitBtn">
+            <span class="material-icons-round">send</span> <span id="submitText">Submit Complaint</span>
+
+        </div>
+      </form>
+      <div id="formMsg" class="alert"></div>
+    </div>
+  </div>
+
+  <!-- Admin Dashboard -->
+  <div id="adminView" class="view">
+    <div class="dashboard-header">
+      <div class="logo-section">
+        <img src="https://mec.edu.om/wp-content/themes/twentytwentyone/assets/images/mec-logo-black.svg" alt="MEC Logo">
+        <div class="title-section">
+          <h3 style="color:var(--primary-dark); font-size:1.5rem; font-weight:700; margin:0;">📊 Dashboard</h3>
+          <p style="color:var(--text-muted); font-size:0.95rem; margin:4px 0 0 0;">Manage complaints and suggestions</p>
+        </div>
+      </div>
+      <div class="admin-info">
+        <span class="material-icons-round">account_circle</span>
+        <span style="color:var(--text-main);"><strong id="adminDisplay">Admin</strong></span>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Total Reports</div></div>
+      <div class="stat-card"><div class="stat-value" id="statResolved">0</div><div class="stat-label">Resolved</div></div>
+      <div class="stat-card"><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
+      <div class="stat-card"><div class="stat-value" id="statSuggestions">0</div><div class="stat-label">Suggestions</div></div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:12px">
+        <h4 style="color:var(--primary-dark); font-weight:700; font-size:1.1rem">Recent Tickets</h4>
+        <button class="ctrl-btn" onclick="loadAdminData()" style="padding:8px 16px; font-size:0.9rem; background:var(--primary-gradient); color:#fff; border:none; border-radius:var(--radius-full)">
+          <span class="material-icons-round" style="font-size:18px; vertical-align:middle; margin-right:4px">refresh</span> Refresh
+        </button>
+      </div>
+      <div class="loading" id="tableLoading"><span class="spinner"></span> <span style="margin-left:12px; vertical-align:middle">Loading data...</span></div>
+      <div style="overflow-x:auto; max-height:420px; border-radius:12px; border:1px solid var(--border); background:var(--bg-card)">
+        <table id="ticketTable">
+          <thead><tr><th>ID</th><th>College ID</th><th>Building</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="tableBody"><tr><td colspan="5" style="text-align:center; padding:28px; color:var(--text-muted)">No data available</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer"><p class="copyright" id="copyrightText">© 2026 Middle East College - Oman. All rights reserved.</p></div>
+
+<!-- Login Modal -->
+<div id="loginModal" class="modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeLoginModal()" aria-label="Close">&times;</button>
+    <h3 style="margin-bottom:28px; color:var(--primary-dark); text-align:center; font-size:1.4rem; font-weight:700" id="loginTitle">
+      <span class="material-icons-round" style="vertical-align:middle; margin-right:8px">lock</span>
+      <span id="loginTitleText">Admin Login</span>
+    </h3>
+    <form onsubmit="handleLogin(event)">
+      <div style="margin-bottom:20px">
+        <label id="studentIdLabel">Student ID</label>
+        <input type="text" id="uName" required autocomplete="username" placeholder="Enter your Student ID" maxlength="10">
+      </div>
+      <div style="margin-bottom:28px">
+        <label id="pinLabel">4-Digit PIN</label>
+        <input type="password" id="uPass" class="pin-input" required autocomplete="current-password" placeholder="••••" maxlength="4" pattern="\d{4}" title="Please enter exactly 4 digits">
+      </div>
+      <button type="submit" class="btn" id="loginBtn">
+        <span class="material-icons-round" style="font-size:18px">verified_user</span>
+        <span style="margin-left:6px">Secure Login</span>
+      </button>
+      <div id="loginMsg" class="alert alert-error"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+  let translations = {}, adminSession = null, currentRole = null, currentFormType = 'complaint';
+  
+  window.addEventListener('load', function() {
+    google.script.run.withSuccessHandler(function(d){translations=d; applyTranslations();}).withFailureHandler(console.warn).getTranslations();
+    const saved = sessionStorage.getItem('mec_admin_session');
+    if (saved) try { adminSession = JSON.parse(saved); document.getElementById('adminDisplay').textContent = adminSession.displayName; } catch(e){ sessionStorage.removeItem('mec_admin_session'); }
+  });
+  
+  function applyTranslations() {
+    const t = translations, m = {'appSubtitle':'subtitle','welcomeText':'welcome','selectRoleText':'selectRole','formTitleText':'formTitle','collegeIdLabel':'collegeId','buildingNameLabel':'buildingName','serviceLabel':'service','causeLabel':'cause','detailsLabel':'details','submitText':'submit','suggestText':'suggest','loginTitleText':'loginTitle','studentIdLabel':'studentId','pinLabel':'pin','copyrightText':'copyright'};
+    for (const [id, key] of Object.entries(m)) {
+      const el = document.getElementById(id);
+      if (el && t[key]) {
+        if (el.tagName === 'LABEL') el.innerHTML = t[key] + ' <span class="required">*</span>';
+        else if (el.id === 'formTitle' || el.id === 'loginTitle') {
+          const icon = el.querySelector('.material-icons-round');
+          el.innerHTML = icon ? icon.outerHTML + ' <span>' + t[key] + '</span>' : t[key];
+        } else el.innerHTML = t[key];
+      }
+    }
+    document.getElementById('details') && (document.getElementById('details').placeholder = 'Describe your issue clearly...');
+  }
+  
+  function selectRole(r) { 
+    currentRole=r; 
+    document.getElementById('roleSelection').classList.remove('active'); 
+    document.getElementById('topControls').style.display='flex'; 
+    if(r==='student'){ document.getElementById('citizen').classList.add('active'); document.getElementById('logoutBtn').style.display='none'; } 
+    else if(r==='admin'){ if(adminSession) showAdminDashboard(); else document.getElementById('loginModal').classList.add('active'); } 
+  }
+  
+  function goToRoleSelection() { 
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active')); 
+    document.getElementById('topControls').style.display='none'; 
+    document.getElementById('roleSelection').classList.add('active'); 
+    var mf = document.getElementById('mainForm'); if(mf) mf.reset(); 
+    currentRole=null; 
+  }
+  
+  function closeLoginModal() { 
+    document.getElementById('loginModal').classList.remove('active'); 
+    if(!adminSession && currentRole==='admin') goToRoleSelection(); 
+  }
+  
+  function handleLogin(e) {
+    e.preventDefault(); 
+    const id=document.getElementById('uName').value.trim(), pin=document.getElementById('uPass').value.trim(), btn=document.getElementById('loginBtn'), msg=document.getElementById('loginMsg');
+    if(!/^\d{4}$/.test(pin)) { msg.textContent=translations.pinFormat||'PIN must be 4 digits'; msg.className='alert alert-error show'; return; }
+    btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Verifying...'; msg.classList.remove('show');
+    google.script.run.withSuccessHandler(function(res){ 
+      btn.disabled=false; btn.innerHTML='<span class="material-icons-round" style="font-size:18px">verified_user</span><span style="margin-left:6px">Secure Login</span>'; 
+      if(res.success){ adminSession=res; sessionStorage.setItem('mec_admin_session',JSON.stringify(res)); document.getElementById('adminDisplay').textContent=res.displayName; closeLoginModal(); showAdminDashboard(); } 
+      else { msg.textContent=res.message||'Invalid credentials'; msg.className='alert alert-error show'; document.getElementById('uPass').value=''; document.getElementById('uPass').focus(); } 
+    }).withFailureHandler(function(err){ btn.disabled=false; btn.innerHTML='<span class="material-icons-round" style="font-size:18px">verified_user</span><span style="margin-left:6px">Secure Login</span>'; msg.textContent='❌ Connection error'; msg.className='alert alert-error show'; }).verifyAdminLogin(id,pin);
+  }
+  
+  function showAdminDashboard() { document.getElementById('adminView').classList.add('active'); document.getElementById('logoutBtn').style.display='flex'; loadAdminData(); }
+  function adminLogout() { adminSession=null; sessionStorage.removeItem('mec_admin_session'); document.getElementById('logoutBtn').style.display='none'; goToRoleSelection(); }
+  
+  function loadAdminData() {
+    const load=document.getElementById('tableLoading'), tb=document.getElementById('tableBody'); load.classList.add('show'); tb.innerHTML='';
+    google.script.run.withSuccessHandler(function(d){ 
+      load.classList.remove('show'); 
+      document.getElementById('statTotal').textContent=d.stats.total; document.getElementById('statResolved').textContent=d.stats.doneR; document.getElementById('statPending').textContent=d.stats.newR; document.getElementById('statSuggestions').textContent=d.stats.suggestions; 
+      if(!d.tickets||!d.tickets.length){ tb.innerHTML='<tr><td colspan="5" style="text-align:center; padding:28px; color:var(--text-muted)">No tickets found</td></tr>'; return; } 
+      tb.innerHTML=d.tickets.map(t=>{ 
+        const so=['New','In Progress','Resolved'].map(s=>'<option value="'+s+'"'+(t.status===s?' selected':'')+'>'+s+'</option>').join(''); 
+        return '<tr><td style="font-family:monospace; font-size:0.9rem; font-weight:600">'+t.id+'</td><td>'+t.collegeId+'</td><td>'+t.building+'</td><td><select class="cell-select" onchange="updateTicketStatus(\''+t.id+'\', this.value)">'+so+'</select></td><td><button class="ctrl-btn" onclick="viewTicketDetails(\''+t.id+'\')" style="padding:6px 14px; font-size:0.85rem; border-radius:10px">View</button></td></tr>'; 
+      }).join(''); 
+    }).withFailureHandler(function(){ load.classList.remove('show'); tb.innerHTML='<tr><td colspan="5" style="text-align:center; padding:28px; color:var(--danger)">Failed to load data</td></tr>'; }).getAdminAnalytics();
+  }
+  
+  function updateTicketStatus(id,st) { 
+    var nm = (adminSession && adminSession.username) ? adminSession.username : 'System'; 
+    google.script.run.withSuccessHandler(function(){ event.target.style.borderColor='var(--success)'; setTimeout(()=>{ event.target.style.borderColor=''; }, 1000); setTimeout(loadAdminData, 1000); }).withFailureHandler(function(e){ alert('❌ Update failed: '+e.message); event.target.style.borderColor='var(--danger)'; setTimeout(()=>{ event.target.style.borderColor=''; }, 1000); }).updateTicketStatus(id,st,nm); 
+  }
+  function viewTicketDetails(id) { alert('Ticket ID: '+id+'\n\nDetails view feature - to be implemented'); }
+  
+  function handleSubmit(e) { e.preventDefault(); currentFormType='complaint'; submitForm(); }
+  function submitAsSuggestion() { 
+    if(!document.getElementById('mainForm').checkValidity()){ document.getElementById('mainForm').reportValidity(); showAlert('Please fill in all required fields', 'error'); return; } 
+    currentFormType='suggestion'; submitForm(); 
+  }
+  
+  function submitForm() { 
+    const f=document.getElementById('mainForm'); 
+    if(!f.checkValidity()){ f.reportValidity(); showAlert('Please fill in all required fields', 'error'); return; } 
+    const btn=currentFormType==='complaint'?document.getElementById('submitBtn'):document.getElementById('suggestBtn'), orig=btn.innerHTML, msg=document.getElementById('formMsg'); 
+    btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Sending...'; msg.classList.remove('show','alert-success','alert-error'); 
+    const fd={ collegeId:document.getElementById('collegeId').value, buildingName:document.getElementById('buildingName').value, service:document.getElementById('service').value, rootCause:document.getElementById('cause').value, details:document.getElementById('details').value }; 
+    const sf=currentFormType==='suggestion'?'submitSuggestion':'submitSmartReport'; 
+    google.script.run.withSuccessHandler(function(r){ btn.disabled=false; btn.innerHTML=orig; msg.textContent='✅ Submitted! Tracking ID: '+r.id; msg.className='alert alert-success show'; f.reset(); }).withFailureHandler(function(e){ btn.disabled=false; btn.innerHTML=orig; msg.textContent='❌ '+e.message; msg.className='alert alert-error show'; })[sf](fd); 
+  }
+  
+  function showAlert(m,t) { const msg=document.getElementById('formMsg'); msg.textContent=m; msg.className='alert alert-'+(t==='error'?'error':'success')+' show'; setTimeout(()=>msg.classList.remove('show'),5000); }
+  
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && document.getElementById('loginModal').classList.contains('active')) closeLoginModal(); });
+  document.getElementById('loginModal').addEventListener('click', function(e){ if(e.target===this) closeLoginModal(); });
+  document.getElementById('uPass').addEventListener('input', function(e){ if(this.value.length===4) var sb = this.form.querySelector('button[type="submit"]'); if(sb) sb.focus(); });
+
+  // ✅ ✅ ✅ College ID Auto-Format: 2 digits + 1 lowercase letter + 5 digits ✅ ✅ ✅
+  document.getElementById('collegeId').addEventListener('input', function() {
+    let raw = this.value.toLowerCase();
+    // Extract first 2 digits
+    let digits1 = raw.replace(/[^0-9]/g, '').substring(0, 2);
+    // Extract first lowercase letter
+    let letter = raw.replace(/[^a-z]/g, '')[0] || '';
+    // Extract next 5 digits
+    let digits2 = raw.replace(/[^0-9]/g, '').substring(2, 7);
+    // Combine in correct order
+    this.value = digits1 + letter + digits2;
+  });
+</script>
+</body>
+</html>
