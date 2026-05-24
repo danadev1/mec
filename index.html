@@ -566,7 +566,7 @@
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.getElementById('topControls').style.display = 'none';
     document.getElementById('roleSelection').classList.add('active');
-    document.getElementById('mainForm')?.reset();
+    var mf=document.getElementById('mainForm'); if(mf) mf.reset();
     currentFormType = 'complaint';
   }
 
@@ -765,7 +765,7 @@
   async function updateTicketStatus(ticketId, newStatus) {
     const { error } = await db
       .from('mec_reports')
-      .update({ status: newStatus, employee: adminSession?.username || 'System' })
+      .update({ status: newStatus, employee: (adminSession && adminSession.username) ? adminSession.username : 'System' })
       .eq('id', ticketId);
 
     if (error) alert('❌ Update failed: ' + error.message);
