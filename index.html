@@ -757,7 +757,6 @@
         <td>${t.building_name}</td>
         <td>${t.type === 'suggestion' ? '💡 Suggestion' : '📋 Complaint'}</td>
         <td><select class="cell-select" onchange="updateTicketStatus('${t.id}', this.value)">${options}</select></td>
-// الجديد
 <td><button class="btn-table-action" onclick="viewTicket(${JSON.stringify(t).replace(/"/g,'&quot;')})" style="padding:8px 16px; font-size:0.85rem; border-radius:8px; cursor:pointer;">View</button></td>      </tr>`;
     }).join('');
   }
