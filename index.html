@@ -525,16 +525,16 @@
 
 <script>
   // =====================================================
-  // SUPABASE CONFIG — ضع بياناتك هنا بعد إنشاء المشروع
+  // SUPABASE CONFIG — Enter your credentials here after creating the project
   // =====================================================
-  const SUPABASE_URL = 'https://giyoztmfxugiuvzendmt.supabase.co';       // مثال: https://xxxx.supabase.co
-  const SUPABASE_KEY = 'sb_publishable_33NZa4qSlSjyY8AjQsBBGA_oodQ0D7K';  // مفتاح anon العام
+  const SUPABASE_URL = 'https://giyoztmfxugiuvzendmt.supabase.co';       // Example: https://xxxx.supabase.co
+  const SUPABASE_KEY = 'sb_publishable_33NZa4qSlSjyY8AjQsBBGA_oodQ0D7K';  // Public anon key
 
   const { createClient } = supabase;
   const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
   // =====================================================
-  // ADMIN USERS — يمكن نقلها لـ Supabase لاحقاً
+  // ADMIN USERS — Can be migrated to Supabase later
   // =====================================================
   const ADMIN_USERS = {
     '23f24545': '1111',
@@ -787,7 +787,7 @@
   }
 
   // =====================================================
-  // INIT
+  // INITIALIZATION
   // =====================================================
   window.addEventListener('load', function() {
     const saved = sessionStorage.getItem('mec_admin_session');
